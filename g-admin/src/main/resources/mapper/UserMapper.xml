@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.manage.mapper.UserMapper">
+    <update id="updateByUserId">
+        update g_user
+        set username  = #{username},
+            password  = #{password},
+            user_desc = #{userDesc}
+        where user_id = #{userId};
+    </update>
+    <delete id="deleteUserById">
+        update g_user
+        set deleted = 1
+        where user_id = #{id};
+    </delete>
+
+    <select id="getRoleByUserId" parameterType="Integer" resultType="String">
+        SELECT b.role_name
+        FROM g_user_role a,
+             g_role b
+        WHERE a.`user_id` = #{userId}
+          AND a.`role_id` = b.`role_id`
+    </select>
+    <select id="getUserListByRoleName" parameterType="String" resultType="com.exam.manage.entity.User">
+        select *
+        from g_user
+        where user_id in (select user_id
+                          from g_user_role
+                          where role_id
+                                    = (select role_id from g_role where role_name = #{role}));
+    </select>
+    <select id="selectUserById" resultType="com.exam.manage.entity.User">
+        select *
+        from g_user
+        where user_id = #{id};
+    </select>
+</mapper>

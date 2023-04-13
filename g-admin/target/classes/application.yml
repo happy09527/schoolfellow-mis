@@ -1,0 +1,23 @@
+server:
+  port: 8001
+
+spring:
+  datasource:
+    username: root
+    password: 942699
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/fruitdb?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+  redis:
+    port: 6379
+    host: localhost
+
+logging:
+  level:
+    com.exam.manage: debug
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
