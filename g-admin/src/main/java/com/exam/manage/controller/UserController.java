@@ -6,6 +6,7 @@ import com.exam.manage.params.Result;
 import com.exam.manage.params.RoleParam;
 import com.exam.manage.params.UserParam;
 import com.exam.manage.service.UserService;
+import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @author zx
  * @since 2023-04-06
  */
+@Api
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -30,7 +32,6 @@ public class UserController {
 
     @PostMapping("/login")
     public Result login(@RequestBody UserParam userParam) {
-        System.out.println(userParam.getUsername() + userParam.getPassword());
         Map<String, String> map = userService.login(userParam);
         if (map != null) {
             return Result.success(map);

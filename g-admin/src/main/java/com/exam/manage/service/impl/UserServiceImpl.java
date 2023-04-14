@@ -75,7 +75,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println(user+"aaaaaaaaaaaaa");
         if (StringUtils.isEmpty(user)) {
             return null;
         }
