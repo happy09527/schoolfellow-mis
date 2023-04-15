@@ -2,10 +2,7 @@ package com.exam.manage.controller;
 
 
 import com.exam.manage.params.Result;
-import com.exam.manage.params.RoleParam;
 import com.exam.manage.service.InfoService;
-import com.exam.manage.service.RoleService;
-import com.exam.manage.service.impl.InfoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

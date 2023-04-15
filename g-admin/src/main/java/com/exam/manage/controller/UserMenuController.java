@@ -15,6 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/role-menu")
-public class RoleMenuController {
+public class UserMenuController {
 
 }

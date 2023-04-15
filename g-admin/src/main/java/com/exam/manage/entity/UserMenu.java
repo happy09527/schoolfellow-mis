@@ -17,8 +17,8 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("g_role_menu")
-public class RoleMenu implements Serializable {
+@TableName("g_user_menu")
+public class UserMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

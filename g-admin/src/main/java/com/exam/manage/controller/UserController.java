@@ -57,11 +57,9 @@ public class UserController {
 
     @GetMapping("/list")
     public Result getUserList(@RequestParam(value = "username", required = false) String username,
-                              @RequestParam(value = "role", required = false) String role,
                               @RequestParam(value = "pageNumber") Integer pageNumber,
                               @RequestParam(value = "pageSize") Integer pageSize) {
-        System.out.println(username + "参数" + role);
-        Map<String, Object> map = userService.getUserList(username, role, pageNumber, pageSize);
+        Map<String, Object> map = userService.getUserList(username, pageNumber, pageSize);
         return Result.success(map);
     }
 

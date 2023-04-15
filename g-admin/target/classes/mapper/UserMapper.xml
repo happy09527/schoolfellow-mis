@@ -21,6 +21,7 @@
         WHERE a.`user_id` = #{userId}
           AND a.`role_id` = b.`role_id`
     </select>
+
     <select id="getUserListByRoleName" parameterType="String" resultType="com.exam.manage.entity.User">
         select *
         from g_user
@@ -29,6 +30,7 @@
                           where role_id
                                     = (select role_id from g_role where role_name = #{role}));
     </select>
+
     <select id="selectUserById" resultType="com.exam.manage.entity.User">
         select *
         from g_user

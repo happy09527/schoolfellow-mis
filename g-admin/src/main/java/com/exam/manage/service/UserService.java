@@ -22,7 +22,7 @@ public interface UserService extends IService<User> {
 
     void logout(String token);
 
-    Map<String,Object> getUserList(String username, String role, Integer pageNumber, Integer pageSize);
+    Map<String,Object> getUserList(String username, Integer pageNumber, Integer pageSize);
 
     void addUser(UserParam userParam);
 

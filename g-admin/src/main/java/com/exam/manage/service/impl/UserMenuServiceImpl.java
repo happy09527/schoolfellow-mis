@@ -1,8 +1,8 @@
 package com.exam.manage.service.impl;
 
-import com.exam.manage.entity.RoleMenu;
-import com.exam.manage.mapper.RoleMenuMapper;
-import com.exam.manage.service.RoleMenuService;
+import com.exam.manage.entity.UserMenu;
+import com.exam.manage.mapper.UserMenuMapper;
+import com.exam.manage.service.UserMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-04-06
  */
 @Service
-public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> implements RoleMenuService {
+public class UserMenuServiceImpl extends ServiceImpl<UserMenuMapper, UserMenu> implements UserMenuService {
 
 }

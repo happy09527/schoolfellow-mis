@@ -1,6 +1,6 @@
 package com.exam.manage.service;
 
-import com.exam.manage.entity.RoleMenu;
+import com.exam.manage.entity.UserMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author zx
  * @since 2023-04-06
  */
-public interface RoleMenuService extends IService<RoleMenu> {
+public interface UserMenuService extends IService<UserMenu> {
 
 }

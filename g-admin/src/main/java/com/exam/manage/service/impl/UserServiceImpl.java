@@ -45,11 +45,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private JwtUtil jwtUtil;
+
     /**
      * @author: ZhangX
      * @date: 2023/4/13 15:03
      * @param: [userParam]
-     * @return: java.util.Map<java.lang.String,java.lang.String>
+     * @return: java.util.Map<java.lang.String, java.lang.String>
      * @description: 登录，JWT验证
      **/
     @Override
@@ -57,7 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper();
         wrapper.eq(User::getUsername, userParam.getUsername());
         User user = this.getOne(wrapper);
-        if (user != null && passwordEncoder.matches(userParam.getPassword(),user.getPassword())) {
+        if (user != null && passwordEncoder.matches(userParam.getPassword(), user.getPassword())) {
             Map<String, String> map = new HashMap<>();
             String token = jwtUtil.createToken(user);
             map.put("token", token);
@@ -79,8 +80,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return null;
         }
         map.put("name", user.getUsername());
-        List<String> roleList = this.baseMapper.getRoleByUserId(user.getUserId());
-        map.put("roles", roleList);
+//        List<String> roleList = this.baseMapper.getRoleByUserId(user.getUserId());
+//        map.put("roles", roleList);
         return map;
     }
 
@@ -90,31 +91,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Map<String, Object> getUserList(String username, String role, Integer pageNumber, Integer pageSize) {
+    public Map<String, Object> getUserList(String username, Integer pageNumber, Integer pageSize) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         if (!StringUtils.isEmpty(username)) {
             wrapper.eq(User::getUsername, username);
             Page<User> page = new Page<>(pageNumber, pageSize);
             this.page(page, wrapper);
-            if (!StringUtils.isEmpty(role)) {
-                List<User> users = userMapper.getUserListByRoleName(role);
-                List<User> accountIdList = users.stream().filter(page.getRecords()::contains).collect(Collectors.toList());
-                System.out.println("2" + accountIdList);
-                Map<String, Object> data = new HashMap<>();
-                data.put("total", accountIdList.size());
-                data.put("rows", accountIdList);
-                return data;
-            } else {
-                Map<String, Object> data = new HashMap<>();
-                data.put("total", page.getTotal());
-                data.put("rows", page.getRecords());
-                return data;
-            }
-        } else if (!StringUtils.isEmpty(role)) {
-            List<User> users = userMapper.getUserListByRoleName(role);
             Map<String, Object> data = new HashMap<>();
-            data.put("total", users.size());
-            data.put("rows", users);
+            data.put("total", page.getTotal());
+            data.put("rows", page.getRecords());
             return data;
         } else {
             wrapper.eq(!StringUtils.isEmpty(username), User::getUsername, username);
@@ -135,8 +120,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUserDesc(userParam.getDesc());
         userMapper.insert(user);
     }
+
     @Override
-    public void updateUser(UserParam userParam){
+    public void updateUser(UserParam userParam) {
         userMapper.updateByUserId(userParam.getUserId(), userParam.getUsername(), passwordEncoder.encode(userParam.getPassword()), userParam.getDesc());
     }
 
