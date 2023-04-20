@@ -1,9 +1,12 @@
 package com.exam.manage.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.exam.manage.params.Result;
+import com.exam.manage.service.UserMenuService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -14,7 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-04-06
  */
 @RestController
-@RequestMapping("/role-menu")
+@RequestMapping("/user")
 public class UserMenuController {
+    @Autowired
+    private UserMenuService userMenuService;
+
+    @GetMapping("/getMenu")
+    public Result getMenuList(@RequestParam(value = "userId") Integer userId){
+        List<String> roles = userMenuService.getMenuList(userId);
+        return Result.success(roles);
+    }
+
 
 }

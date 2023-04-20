@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,9 @@ public class Test1 {
     public void test1() {
         List<Info> info = infoMapper.selectList(null);
         info.forEach(System.out::println);
+        HashMap<String,Object> map  = new HashMap<>();
+        map.put("ad","asd");
+        map.get("ad");
     }
 
     public static void main(String[] args) {

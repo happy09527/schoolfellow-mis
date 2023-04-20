@@ -3,6 +3,8 @@ package com.exam.manage.service;
 import com.exam.manage.entity.UserMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UserMenuService extends IService<UserMenu> {
 
+    List<String> getMenuList(Integer userId);
 }

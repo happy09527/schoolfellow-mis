@@ -20,5 +20,6 @@ public class UserParam {
     private String username;
     private String password;
     private List<String> roleList;
+    private List<String> menuList;
     private String desc;
 }

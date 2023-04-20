@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.exam.manage.entity.User;
 import com.exam.manage.mapper.UserMapper;
 import com.exam.manage.params.UserParam;
+import com.exam.manage.service.UserMenuService;
+import com.exam.manage.service.UserRoleService;
 import com.exam.manage.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.exam.manage.util.JwtUtil;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +48,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserMenuService userMenuService;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * @author: ZhangX
@@ -106,8 +115,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             Page<User> page = new Page<>(pageNumber, pageSize);
             this.page(page, wrapper);
             Map<String, Object> data = new HashMap<>();
+            List<User> rows = page.getRecords();
+            List<UserParam> userParamRows = new ArrayList<>();
+            for (User user : rows) {
+                userParamRows.add(new UserParam(user.getUserId(), user.getUsername(), user.getPassword()
+                        , userMenuService.getMenuList(user.getUserId()), userRoleService.getRoleList(user.getUserId())
+                        , user.getUserDesc()));
+            }
             data.put("total", page.getTotal());
-            data.put("rows", page.getRecords());
+            data.put("rows", userParamRows);
             return data;
         }
     }
