@@ -1,10 +1,15 @@
 package com.exam.manage.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.exam.manage.entity.Menu;
 import com.exam.manage.entity.UserMenu;
 import com.exam.manage.mapper.UserMenuMapper;
+import com.exam.manage.service.MenuService;
 import com.exam.manage.service.UserMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.models.auth.In;
+import kotlin.jvm.internal.Lambda;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,6 +29,9 @@ public class UserMenuServiceImpl extends ServiceImpl<UserMenuMapper, UserMenu> i
     @Resource
     private UserMenuMapper userMenuMapper;
 
+    @Autowired
+    private MenuService menuService;
+
     @Override
     public List<String> getMenuList(Integer userId) {
         LambdaQueryWrapper<UserMenu> wrapper = new LambdaQueryWrapper<>();
@@ -40,5 +48,18 @@ public class UserMenuServiceImpl extends ServiceImpl<UserMenuMapper, UserMenu> i
             }
         }
         return list;
+    }
+
+    @Override
+    public List<Menu> getMenuByUserId(Integer userId) {
+        LambdaQueryWrapper<UserMenu> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserMenu::getUserId,userId);
+        List<UserMenu> list = userMenuMapper.selectList(wrapper);
+        List<Integer> idList = new ArrayList<>();
+        for(UserMenu userMenu : list){
+            idList.add(userMenu.getMenuId());
+        }
+        List<Menu> menuList = menuService.getMenuList(idList);
+        return menuList;
     }
 }

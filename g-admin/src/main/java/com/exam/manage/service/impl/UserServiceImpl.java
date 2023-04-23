@@ -4,6 +4,7 @@ import cn.hutool.core.lang.UUID;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.exam.manage.entity.Menu;
 import com.exam.manage.entity.User;
 import com.exam.manage.mapper.UserMapper;
 import com.exam.manage.params.UserParam;
@@ -13,7 +14,7 @@ import com.exam.manage.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.exam.manage.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+//import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -36,9 +37,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
 
     @Resource
     private UserMapper userMapper;
@@ -91,6 +89,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         map.put("name", user.getUsername());
 //        List<String> roleList = this.baseMapper.getRoleByUserId(user.getUserId());
 //        map.put("roles", roleList);
+        map.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        List<Menu> menuByUserId = userMenuService.getMenuByUserId(user.getUserId());
+        List<String> menus = new ArrayList<>();
+        for (Menu menu : menuByUserId) {
+            menus.add(menu.getPath());
+        }
+        map.put("menuList", menus);
         return map;
     }
 
@@ -119,7 +124,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             List<UserParam> userParamRows = new ArrayList<>();
             for (User user : rows) {
                 userParamRows.add(new UserParam(user.getUserId(), user.getUsername(), user.getPassword()
-                        , userMenuService.getMenuList(user.getUserId()), userRoleService.getRoleList(user.getUserId())
+                        , userRoleService.getRoleList(user.getUserId()), userMenuService.getMenuList(user.getUserId())
                         , user.getUserDesc()));
             }
             data.put("total", page.getTotal());

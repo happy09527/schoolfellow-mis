@@ -36,8 +36,6 @@ public class Menu implements Serializable {
 
     private String icon;
 
-    private String isLeaf;
-
     private Boolean hidden;
 
 
