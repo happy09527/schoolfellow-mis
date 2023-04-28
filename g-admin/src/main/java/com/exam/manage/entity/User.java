@@ -36,4 +36,15 @@ public class User implements Serializable {
     private String userDesc;
 
     private Integer deleted;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", userDesc='" + userDesc + '\'' +
+                ", deleted=" + deleted +
+                '}';
+    }
 }

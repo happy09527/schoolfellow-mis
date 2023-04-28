@@ -6,13 +6,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.exam.manage.entity.Menu;
 import com.exam.manage.entity.User;
+import com.exam.manage.entity.UserRole;
 import com.exam.manage.mapper.UserMapper;
+import com.exam.manage.mapper.UserRoleMapper;
 import com.exam.manage.params.UserParam;
 import com.exam.manage.service.UserMenuService;
 import com.exam.manage.service.UserRoleService;
 import com.exam.manage.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.exam.manage.util.JwtUtil;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,6 +55,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private UserRoleService userRoleService;
+
+    @Resource
+    private UserRoleMapper userRoleMapper;
 
     /**
      * @author: ZhangX
@@ -156,5 +162,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public void deleteById(Integer id) {
         userMapper.deleteUserById(id);
+    }
+
+    @Override
+    public List<String> getRolesById(Integer userId) {
+        List<String> list = userRoleService.getRoleList(userId);
+        return list;
     }
 }

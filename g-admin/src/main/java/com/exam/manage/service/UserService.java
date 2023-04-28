@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.exam.manage.params.RoleParam;
 import com.exam.manage.params.UserParam;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,4 +32,6 @@ public interface UserService extends IService<User> {
     User getUserById(Integer id);
 
     void deleteById(Integer id);
+
+    List<String> getRolesById(Integer userId);
 }

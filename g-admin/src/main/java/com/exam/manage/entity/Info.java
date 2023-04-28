@@ -2,16 +2,21 @@ package com.exam.manage.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
+
 import java.time.LocalDate;
+
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author zx
@@ -21,6 +26,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("g_info")
+@AllArgsConstructor
 public class Info implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -101,11 +107,10 @@ public class Info implements Serializable {
     /**
      * 现工作单位（学校）
      */
-    private String cComapny;
+    private String cCompany;
 
     /**
-     * 
-现工作职务
+     * 现工作职务
      */
     private String cJob;
 
@@ -134,5 +139,5 @@ public class Info implements Serializable {
      */
     private String remark;
 
-
+//    private Integer delete;
 }

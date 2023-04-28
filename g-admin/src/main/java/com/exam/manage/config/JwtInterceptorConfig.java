@@ -1,8 +1,12 @@
 package com.exam.manage.config;
 
 import com.alibaba.fastjson2.JSON;
+import com.exam.manage.entity.User;
 import com.exam.manage.params.Result;
+import com.exam.manage.params.UserParam;
+import com.exam.manage.service.UserService;
 import com.exam.manage.util.JwtUtil;
+import com.exam.manage.util.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,7 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 public class JwtInterceptorConfig implements HandlerInterceptor {
     @Autowired
     private JwtUtil jwtUtil;
-
+    @Autowired
+    private UserService userService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (!(handler instanceof HandlerMethod)) {
@@ -40,8 +45,12 @@ public class JwtInterceptorConfig implements HandlerInterceptor {
         String token = request.getHeader("X-Token");
         if (!StringUtils.isEmpty(token)) {
             try {
-                jwtUtil.parseToken(token);
+                User user = jwtUtil.parseToken(token, User.class);
+                UserParam userParam = new UserParam();
+                userParam.setUsername(user.getUsername());
+                userParam.setRoleList(userService.getRolesById(user.getUserId()));
                 log.debug(request.getRequestURI());
+                ThreadLocalUtil.put(userParam);
                 return true;
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -51,5 +60,11 @@ public class JwtInterceptorConfig implements HandlerInterceptor {
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(JSON.toJSONString(Result.fail(20003, "jwt令牌无效，请重新登录")));
         return false;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        //如果不删除 ThreadLocal中用完的信息 会有内存泄漏的风险
+        ThreadLocalUtil.remove();
     }
 }
