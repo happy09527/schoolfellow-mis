@@ -7,6 +7,10 @@ spring:
     password: 942699
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/fruitdb?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+
+  servlet:
+    multipart:
+      max-file-size: 4MB
 #  redis:
 #    port: 6379
 #    host: localhost
@@ -21,3 +25,6 @@ mybatis-plus:
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
+
+
+# 上传文件大小设置servlet:multipart:#设置单个文件大小，单位MB和KB都可以max-file-size: 100MB#设置总上传的数据大小，单位MB和KB都可以max-request-size: 100MBmybatis-plus:# 配置日志默认输出到控制台，因为Sql语句不可见，要查看日志才可见执行情况configuration:log-impl: org.apache.ibatis.logging.stdout.StdOutImpl# 配置逻辑删除global-config:db-config:logic-delete-value: 1logic-not-delete-value: 0#xml文件位置mapper-locations: classpath:com/tang/mapper/xml/*.xml

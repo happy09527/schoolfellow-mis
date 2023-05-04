@@ -43,6 +43,10 @@ public class JwtInterceptorConfig implements HandlerInterceptor {
         }
 
         String token = request.getHeader("X-Token");
+        String url = request.getRequestURI();
+        if(url.equals("/info/import")){
+            return true;
+        }
         if (!StringUtils.isEmpty(token)) {
             try {
                 User user = jwtUtil.parseToken(token, User.class);

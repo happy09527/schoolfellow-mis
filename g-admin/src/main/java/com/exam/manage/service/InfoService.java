@@ -4,6 +4,7 @@ import com.exam.manage.entity.Info;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.exam.manage.params.InfoParam;
 import com.exam.manage.params.Result;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -28,5 +29,7 @@ public interface InfoService extends IService<Info> {
 
     void updateInfo(InfoParam infoParam);
 
-    void saveImportTask(List<Info> listData);
+    boolean tableImport(MultipartFile file);
+
+    List<Info> export(String name, String id, String company, String city, String tutor, String degree, String major);
 }

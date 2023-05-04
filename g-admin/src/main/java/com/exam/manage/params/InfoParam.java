@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InfoParam {
-    private int a;
+
     private Integer id;
 
     /**

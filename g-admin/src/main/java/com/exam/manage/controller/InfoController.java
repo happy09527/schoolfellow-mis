@@ -9,22 +9,29 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.EasyExcelFactory;
+import com.exam.manage.config.ExcelListener;
 import com.exam.manage.entity.Info;
-import com.exam.manage.entity.User;
+import com.exam.manage.mapper.InfoMapper;
+import com.exam.manage.params.InfoDto;
 import com.exam.manage.params.Result;
 import com.exam.manage.params.InfoParam;
 import com.exam.manage.service.InfoService;
+import com.exam.manage.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * <p>
@@ -39,6 +46,8 @@ import java.util.TimeZone;
 public class InfoController {
     @Autowired
     private InfoService infoService;
+    @Autowired
+    private InfoMapper infoMapper;
 
     //    @GetMapping("/all")
 //    public Result getAllInfo(){
@@ -52,7 +61,6 @@ public class InfoController {
                               @RequestParam(value = "tutor", required = false) String tutor,
                               @RequestParam(value = "degree", required = false) String degree,
                               @RequestParam(value = "major", required = false) String major,
-
                               @RequestParam(value = "pageNumber") Integer pageNumber,
                               @RequestParam(value = "pageSize") Integer pageSize) {
         Map<String, Object> map = infoService.getInfoList(name, id, company, city, tutor, major, degree, pageNumber, pageSize);
@@ -89,76 +97,54 @@ public class InfoController {
         return Result.success("删除成功");
     }
 
-
-    /**
-     * 任务导入    使用hutool工具类导入Excel文件
-     *
-     * @return
-     */
-    @PostMapping("/import")
-    public Result fileUpload(@RequestParam("file") MultipartFile file) {
-        try {
-            //使用hutool工具类导入Excel文件
-            ExcelReader reader = ExcelUtil.getReader(file.getInputStream());
-            //读取excel中的数据，与User实体类一一对应
-            List<Info> listData = reader.readAll(Info.class);
-            //批量存入数据库中
-            infoService.saveImportTask(listData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Result.success("成功上传");
+    @GetMapping("/1111")
+    public Result get1(HttpServletResponse response, HttpServletRequest request) {
+        return Result.success("删除成功");
     }
 
-
     /**
-     * 统计导出 文件下载
-     * @return
+     * 表格导入
      */
-//    @GetMapping(value = "/export")
-//    public void statisticsExport(
-//            @RequestParam("province") String province,
-//            @RequestParam("city") String city,
-//            @RequestParam("counter") String counter,
-//            @RequestParam("startTime") Long startTime,
-//            @RequestParam("endTime") Long endTime,
-//            @RequestParam("orderByType") String orderByType,
-//            HttpServletResponse response) {
-//        try {
-//            response.setContentType("application/vnd.ms-excel");
-//            response.setCharacterEncoding("utf-8");
-//            String fileName = URLEncoder.encode("统计", "UTF-8");
-//            response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
-//            FastDateFormat fastDateFormat = FastDateFormat.getInstance(DatePattern.NORM_DATETIME_PATTERN, TimeZone.getTimeZone("Asia/Shanghai"));
-//            String startTimeStr = fastDateFormat.format(DateUtil.beginOfDay(new DateTime(startTime, TimeZone.getTimeZone("Asia/Shanghai"))));
-//            String endTimeStr = fastDateFormat.format(DateUtil.endOfDay(new DateTime(endTime, TimeZone.getTimeZone("Asia/Shanghai"))));
-//            //  DemoDTO 查询条件入参
-//            DemoDto dto= new DemoDto();
-//            dto.setProvince(province);
-//            dto.setCity(city);
-//            dto.setCounter(counter);
-//            dto.setStartTime(startTimeStr);
-//            dto.setEndTime(endTimeStr);
-//            dto.setOrderByType(orderByType);
-//            //根据查询条件查询数据库---把需要导出的数据放到list中
-//            List<DemoVO> list = task.findStatisByParams(DemoDto);
-//            // 这里需要设置不关闭流
-//            String dateTitle = "时间段：" + fastDateFormat.format(new DateTime(startTime,TimeZone.getTimeZone("Asia/Shanghai"))) + "至" + DateUtil.formatDate(new DateTime(endTime, TimeZone.getTimeZone("Asia/Shanghai")));
-//            String rangeTitle = "范围:" +
-//                    (StrUtil.isBlank(province) ? "全部" : province) + "/" +
-//                    (StrUtil.isBlank(city) ? "全部" : city) + "/" +
-//                    (StrUtil.isBlank(counter) ? "全部" : counter);
-//            EasyExcel.write(response.getOutputStream(), ClientDetailStatisVO.class)
-//                    .head(ClientDetailStatisVO.head(dateTitle, rangeTitle))
-//                    .autoCloseStream(Boolean.FALSE).sheet("统计")
-//                    //上面从数据库查出来的数据
-//                    .doWrite(list);
-//        } catch (Exception e) {
-//            // 重置response
-//            response.reset();
-//            throw new CustomException(Result.Status.INVALID_PARAM);
-//
-//        }
-//    }
+    @PostMapping("/import")
+    public Result tableImport(@RequestParam("file") MultipartFile file) throws IOException {
+        boolean result = infoService.tableImport(file);
+        if (result) {
+            return Result.success("成功");
+        } else {
+            return Result.fail(20003, "插入失败");
+        }
+    }
 
+    @GetMapping("/export")
+    public Result exportTable(HttpServletResponse response, HttpServletRequest request,
+                              @RequestParam(value = "name", required = false) String name,
+                              @RequestParam(value = "id", required = false) String id,
+                              @RequestParam(value = "company", required = false) String company,
+                              @RequestParam(value = "city", required = false) String city,
+                              @RequestParam(value = "tutor", required = false) String tutor,
+                              @RequestParam(value = "degree", required = false) String degree,
+                              @RequestParam(value = "major", required = false) String major) throws IOException {
+        //请求头
+        String fileName = URLEncoder.encode("数据信息表", "UTF-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("UTF-8");
+
+        //逻辑代码获取数据（自定义修改）
+        List<Info> list = infoService.export(name, id, company, city, tutor, degree, major);
+        List<InfoDto> productDOS = BeanUtil.listCopyTo(list, InfoDto.class);
+        System.out.println(productDOS);
+        //获取输出流
+        OutputStream outputStream = response.getOutputStream();
+        try {
+            //导出
+            EasyExcel.write(outputStream, InfoDto.class).sheet().doWrite(productDOS);
+            outputStream.flush();
+        } catch (IOException e) {
+
+        } finally {
+            outputStream.close();
+        }
+        return null;
+    }
 }
