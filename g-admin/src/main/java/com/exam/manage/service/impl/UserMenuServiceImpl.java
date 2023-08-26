@@ -44,7 +44,7 @@ public class UserMenuServiceImpl extends ServiceImpl<UserMenuMapper, UserMenu> i
             } else if (userMenu.getMenuId() == 2) {
                 list.add("权限管理");
             }else{
-                list.add("批量管理");
+                list.add("信息管理");
             }
         }
         return list;

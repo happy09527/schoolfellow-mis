@@ -4,9 +4,7 @@ import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -86,55 +84,55 @@ public class InfoDto implements Serializable {
      * 入学时间
      */
     @ExcelProperty(value = "入学时间")
-    private String stime;
+    private String schooltime;
 
     /**
      * 在校专业
      */
     @ExcelProperty(value = "在校专业")
-    private String smajor;
+    private String schoolmajor;
 
     /**
      * 在校班级
      */
     @ExcelProperty(value = "在校班级")
-    private String sclass;
+    private String schoolclass;
 
     /**
      * 在校导师（班主任）
      */
     @ExcelProperty(value = "导师")
-    private String stutor;
+    private String schooltutor;
 
     /**
      * 毕业时间
      */
     @ExcelProperty(value = "毕业时间")
-    private String gtime;
+    private String gradtime;
 
     /**
      * 毕业去向
      */
     @ExcelProperty(value = "毕业去向")
-    private String gdestination;
+    private String graddestination;
 
     /**
      * 现工作单位（学校）
      */
     @ExcelProperty(value = "现工作单位")
-    private String ccompany;
+    private String curcompany;
 
     /**
      * 现工作职务
      */
     @ExcelProperty(value = "现工作职务")
-    private String cjob;
+    private String curjob;
 
     /**
      * 现所在城市
      */
     @ExcelProperty(value = "现所在城市")
-    private String ccity;
+    private String curcity;
 
     /**
      * 联系电话
@@ -160,5 +158,6 @@ public class InfoDto implements Serializable {
     @ExcelProperty(value = "备注")
     private String remark;
 
-//    private Integer delete;
+    //    private Integer delete;
+
 }

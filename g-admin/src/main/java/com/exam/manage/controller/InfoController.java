@@ -64,7 +64,6 @@ public class InfoController {
                               @RequestParam(value = "pageNumber") Integer pageNumber,
                               @RequestParam(value = "pageSize") Integer pageSize) {
         Map<String, Object> map = infoService.getInfoList(name, id, company, city, tutor, major, degree, pageNumber, pageSize);
-        System.out.println(name + id + company + city);
         return Result.success(map);
     }
 
@@ -84,7 +83,7 @@ public class InfoController {
     }
 
     @PostMapping("/update")
-    public Result updateInfo(@RequestBody InfoParam infoParam) {
+    public Result updateInfo(@RequestBody InfoParam infoParam) throws Exception{
         infoService.updateInfo(infoParam);
         Map<String, String> data = new HashMap<>();
         data.put("message", "修改成功");
@@ -115,6 +114,39 @@ public class InfoController {
         }
     }
 
+    //    @GetMapping("/export")
+//    public Result exportTable(HttpServletResponse response, HttpServletRequest request,
+//                              @RequestParam(value = "name", required = false) String name,
+//                              @RequestParam(value = "id", required = false) String id,
+//                              @RequestParam(value = "company", required = false) String company,
+//                              @RequestParam(value = "city", required = false) String city,
+//                              @RequestParam(value = "tutor", required = false) String tutor,
+//                              @RequestParam(value = "degree", required = false) String degree,
+//                              @RequestParam(value = "major", required = false) String major) throws IOException {
+//        //请求头
+//        String fileName = URLEncoder.encode("数据信息表", "UTF-8");
+//        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+//        response.setContentType("application/vnd.ms-excel");
+//        response.setCharacterEncoding("UTF-8");
+//
+//        //逻辑代码获取数据（自定义修改）
+//        List<Info> list = infoService.export(name, id, company, city, tutor, degree, major);
+//        System.out.println(list + "llll");
+//        List<InfoDto> productDOS = BeanUtil.listCopyTo(list, InfoDto.class);
+//        System.out.println(productDOS);
+//        //获取输出流
+//        OutputStream outputStream = response.getOutputStream();
+//        try {
+//            //导出
+//            EasyExcel.write(outputStream, InfoDto.class).sheet().doWrite(productDOS);
+//            outputStream.flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            outputStream.close();
+//        }
+//        return null;
+//    }
     @GetMapping("/export")
     public Result exportTable(HttpServletResponse response, HttpServletRequest request,
                               @RequestParam(value = "name", required = false) String name,
@@ -132,16 +164,17 @@ public class InfoController {
 
         //逻辑代码获取数据（自定义修改）
         List<Info> list = infoService.export(name, id, company, city, tutor, degree, major);
-        List<InfoDto> productDOS = BeanUtil.listCopyTo(list, InfoDto.class);
+        System.out.println(list + "llll");
+        List<InfoDto> productDOS = BeanUtil.listCopyTo(list);
         System.out.println(productDOS);
-        //获取输出流
+//        获取输出流
         OutputStream outputStream = response.getOutputStream();
         try {
             //导出
-            EasyExcel.write(outputStream, InfoDto.class).sheet().doWrite(productDOS);
+            EasyExcel.write(outputStream, InfoDto.class).sheet("校友信息表").doWrite(productDOS);
             outputStream.flush();
         } catch (IOException e) {
-
+            e.printStackTrace();
         } finally {
             outputStream.close();
         }

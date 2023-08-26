@@ -27,7 +27,7 @@ public interface InfoService extends IService<Info> {
 
     void addInfo(InfoParam infoParam);
 
-    void updateInfo(InfoParam infoParam);
+    void updateInfo(InfoParam infoParam) throws Exception;
 
     boolean tableImport(MultipartFile file);
 

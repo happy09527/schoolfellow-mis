@@ -3,14 +3,11 @@ package com.exam.manage.entity;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
 
-import java.time.LocalDate;
-
-import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,10 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
- * <p>
- *
- * </p>
- *
  * @author zx
  * @since 2023-04-04
  */
@@ -94,55 +87,55 @@ public class Info implements Serializable {
      * 入学时间
      */
     @ExcelProperty(value = "入学时间", index = 9)
-    private LocalDate sTime;
+    private Date schoolTime;
 
     /**
      * 在校专业
      */
     @ExcelProperty(value = "专业", index = 10)
-    private String sMajor;
+    private String schoolMajor;
 
     /**
      * 在校班级
      */
     @ExcelProperty(value = "在校班级", index = 11)
-    private String sClass;
+    private String schoolClass;
 
     /**
      * 在校导师（班主任）
      */
     @ExcelProperty(value = "导师", index = 12)
-    private String sTutor;
+    private String schoolTutor;
 
     /**
      * 毕业时间
      */
     @ExcelProperty(value = "毕业时间", index = 13)
-    private LocalDate gTime;
+    private Date gradTime;
 
     /**
      * 毕业去向
      */
     @ExcelProperty(value = "毕业去向城市", index = 14)
-    private String gDestination;
+    private String gradDestination;
 
     /**
      * 现工作单位（学校）
      */
     @ExcelProperty(value = "现工作单位", index = 15)
-    private String cCompany;
+    private String curCompany;
 
     /**
      * 现工作职务
      */
     @ExcelProperty(value = "工作职务", index = 16)
-    private String cJob;
+    private String curJob;
 
     /**
      * 现所在城市
      */
     @ExcelProperty(value = "现所在城市", index = 17)
-    private String cCity;
+    private String curCity;
 
     /**
      * 联系电话
@@ -168,5 +161,8 @@ public class Info implements Serializable {
     @ExcelProperty(value = "备注", index = 21)
     private String remark;
 
-//    private Integer delete;
+    //    private Integer delete;
+    @TableLogic
+    @TableField("is_delete")
+    private Integer isDelete;
 }

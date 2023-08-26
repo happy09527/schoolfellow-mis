@@ -1,11 +1,11 @@
 package com.exam.manage.params;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+        import lombok.AllArgsConstructor;
+        import lombok.Data;
+        import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.Date;
+        import java.time.LocalDate;
+        import java.util.Date;
 
 /**
  * @author: ZhangX
@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InfoParam {
+public class InfoDate {
 
     private Integer id;
 
@@ -62,7 +62,7 @@ public class InfoParam {
     /**
      * 入学时间
      */
-    private Date schoolTime;
+    private String schoolTime;
 
     /**
      * 在校专业
@@ -82,7 +82,7 @@ public class InfoParam {
     /**
      * 毕业时间
      */
-    private Date gradTime;
+    private String gradTime;
 
     /**
      * 毕业去向

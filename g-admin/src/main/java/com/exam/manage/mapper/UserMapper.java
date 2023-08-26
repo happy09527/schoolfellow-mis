@@ -25,5 +25,3 @@ public interface UserMapper extends BaseMapper<User> {
 
     void deleteUserById(Integer id);
 }
-
-
